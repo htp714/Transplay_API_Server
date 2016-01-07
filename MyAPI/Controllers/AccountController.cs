@@ -171,21 +171,22 @@ namespace MyAPI.Controllers
         [Authorize]
         [HttpPost, HttpOptions]
         [Route("getprofile")]
-        public HttpResponseMessage GetProfile([FromBody]string email)
+        public async Task<HttpResponseMessage> GetProfile([FromBody]string email)
         {
             if(!_repo.IsUserExist(email))
             {
                 return CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            DAOs.User user = GLOBAL.db.Users.Single(x => x.Email == email);
+            
 
+            DAOs.User user = GLOBAL.db.Users.Single(x => x.Email == email);
             if (user != null)
             {
                 return CreateResponse(HttpStatusCode.OK, user);
             }
             else
-            {
+            { 
                 DAOs.User ctx = new DAOs.User();
                 ctx.Scores = 0;
                 ctx.Email = email;

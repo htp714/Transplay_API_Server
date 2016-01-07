@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace MyAPI.Controllers
@@ -25,15 +26,14 @@ namespace MyAPI.Controllers
         [Authorize]
         [HttpGet]
         [Route("getallid")]
-        public HttpResponseMessage GetAllID()
+        public async Task<HttpResponseMessage> GetAllID()
         {
 
 
-          
 
-            List<DAOs.Word> words = (from c in GLOBAL.db.Words
-                                     where true
-                                     select c).ToList();
+
+            List<DAOs.Word> words = GLOBAL.db.Words.ToList();
+                                    
 
             List<int> ids =new List<int>();
 
@@ -49,7 +49,7 @@ namespace MyAPI.Controllers
         [Authorize]
         [HttpGet]
         [Route("getword")]
-        public HttpResponseMessage GetWordByID(int id)
+        public async Task<HttpResponseMessage> GetWordByID(int id)
         {
 
             DAOs.Word word = GLOBAL.db.Words.Single(x => x.ID == id);
@@ -62,7 +62,7 @@ namespace MyAPI.Controllers
         [Authorize]
         [HttpGet]
         [Route("searchword")]
-        public HttpResponseMessage GetWordByKeyword(string keyword)
+        public async Task<HttpResponseMessage> GetWordByKeyword(string keyword)
         {
 
             List<DAOs.Word> words = GLOBAL.db.Words.Where(x => x.Name.Contains(keyword)).ToList();
